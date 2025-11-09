@@ -10,26 +10,6 @@ A simple, standalone desktop application that automatically splits PDF files int
 - 🚀 **Fast & Efficient** - Modern, lightweight desktop application
 - 💻 **Works Offline** - No internet connection required after installation
 
-## Download & Install
-
-### 🍎 For Mac
-
-<div align="center">
-
-[![Download for Mac (Apple Silicon)](https://img.shields.io/badge/Download-Mac%20(Apple%20Silicon)-007AFF?style=for-the-badge&logo=apple&logoColor=white)](MacOS%20Installers/PDF%20Chapter%20Splitter%20(Apple%20Silicon).dmg)
-
-[![Download for Mac (Intel)](https://img.shields.io/badge/Download-Mac%20(Intel)-007AFF?style=for-the-badge&logo=apple&logoColor=white)](MacOS%20Installers/PDF%20Chapter%20Splitter%20(Intel).dmg)
-
-</div>
-
-### 🪟 For Windows
-
-<div align="center">
-
-[![Download for Windows](https://img.shields.io/badge/Download-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](Windows%20Installer/PDF%20Chapter%20Splitter%20Setup.exe)
-
-</div>
-
 ## How It Works
 
 1. **Upload a PDF** - Select a PDF file with a table of contents
