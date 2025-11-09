@@ -1,0 +1,88 @@
+{
+  "name": "pdf-chapter-splitter",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:electron": "node build-electron.js",
+    "electron:dev": "npm run build:electron && concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:build": "npm run build && npm run build:electron && electron-builder && npm run move:installers",
+    "electron:pack": "npm run build && npm run build:electron && electron-builder --dir",
+    "electron:pack:mac": "npm run build && npm run build:electron && electron-builder --mac && npm run move:installers:mac",
+    "electron:pack:win": "npm run build && npm run build:electron && electron-builder --win && npm run move:installers:win",
+    "move:installers": "node move-installers.js",
+    "move:installers:mac": "node move-installers.js mac",
+    "move:installers:win": "node move-installers.js win"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "pdfjs-dist": "^4.4.168",
+    "pdf-lib": "^1.17.1",
+    "jszip": "^3.10.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/jszip": "^3.4.1",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "concurrently": "^9.1.0",
+    "wait-on": "^8.0.1",
+    "tailwindcss": "^3.4.17",
+    "postcss": "^8.4.49",
+    "autoprefixer": "^10.4.20",
+    "esbuild": "^0.24.0"
+  },
+  "build": {
+    "appId": "com.pdfchaptersplitter.app",
+    "productName": "PDF Chapter Splitter",
+    "directories": {
+      "output": "../release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "mac": {
+      "icon": "Icons/pdf_splitter_icon.icns",
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "identity": null,
+      "gatekeeperAssess": false,
+      "hardenedRuntime": false
+    },
+    "win": {
+      "icon": "Icons/pdf_splitter_icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "sign": null,
+      "signDlls": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

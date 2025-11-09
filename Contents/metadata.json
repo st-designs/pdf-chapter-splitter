@@ -1,0 +1,5 @@
+{
+  "name": "PDF Chapter Splitter",
+  "description": "An application that splits a PDF file into multiple files, one for each chapter, based on the PDF's embedded table of contents. Users can upload a PDF and download the individual chapter files.",
+  "requestFramePermissions": []
+}
