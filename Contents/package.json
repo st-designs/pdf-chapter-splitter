@@ -12,7 +12,7 @@
     "electron:dev": "npm run build:electron && concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
     "electron:build": "npm run build && npm run build:electron && electron-builder && npm run move:installers",
     "electron:pack": "npm run build && npm run build:electron && electron-builder --dir",
-    "electron:pack:mac": "npm run build && npm run build:electron && electron-builder --mac && npm run move:installers:mac",
+    "electron:pack:mac": "CSC_IDENTITY_AUTO_DISCOVERY=false npm run build && npm run build:electron && electron-builder --mac --config.mac.forceCodeSigning=false && npm run move:installers:mac",
     "electron:pack:win": "npm run build && npm run build:electron && electron-builder --win && npm run move:installers:win",
     "move:installers": "node move-installers.js",
     "move:installers:mac": "node move-installers.js mac",
@@ -64,7 +64,13 @@
       ],
       "identity": null,
       "gatekeeperAssess": false,
-      "hardenedRuntime": false
+      "hardenedRuntime": false,
+      "timestamp": false,
+      "forceCodeSigning": false,
+      "extendInfo": {
+        "com.apple.security.cs.disable-library-validation": true,
+        "com.apple.security.cs.allow-jit": true
+      }
     },
     "win": {
       "icon": "Icons/pdf_splitter_icon.ico",

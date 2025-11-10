@@ -6,17 +6,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 const releaseDir = join(rootDir, 'release');
-const macInstallerDir = join(rootDir, 'MacOS Installers');
-const winInstallerDir = join(rootDir, 'Windows Installer');
+const macIntelReleaseDir = join(releaseDir, 'mac');
+const macArm64ReleaseDir = join(releaseDir, 'mac-arm64');
+const winReleaseDir = join(releaseDir, 'win');
 
 const platform = process.argv[2] || 'all';
 
-// Ensure directories exist
-if (!existsSync(macInstallerDir)) {
-  mkdirSync(macInstallerDir, { recursive: true });
+// Ensure platform-specific release directories exist
+if (!existsSync(macIntelReleaseDir)) {
+  mkdirSync(macIntelReleaseDir, { recursive: true });
 }
-if (!existsSync(winInstallerDir)) {
-  mkdirSync(winInstallerDir, { recursive: true });
+if (!existsSync(macArm64ReleaseDir)) {
+  mkdirSync(macArm64ReleaseDir, { recursive: true });
+}
+if (!existsSync(winReleaseDir)) {
+  mkdirSync(winReleaseDir, { recursive: true });
 }
 
 // Move Mac installers
@@ -27,23 +31,23 @@ if (platform === 'all' || platform === 'mac') {
   const intelBlockmap = join(releaseDir, 'PDF Chapter Splitter-1.0.0.dmg.blockmap');
 
   if (existsSync(arm64Dmg)) {
-    renameSync(arm64Dmg, join(macInstallerDir, 'PDF Chapter Splitter (Apple Silicon).dmg'));
-    console.log('✓ Moved Apple Silicon DMG');
+    renameSync(arm64Dmg, join(macArm64ReleaseDir, 'PDF Chapter Splitter (Apple Silicon).dmg'));
+    console.log('✓ Moved Apple Silicon DMG to release/mac-arm64');
   }
   if (existsSync(intelDmg)) {
-    renameSync(intelDmg, join(macInstallerDir, 'PDF Chapter Splitter (Intel).dmg'));
-    console.log('✓ Moved Intel DMG');
+    renameSync(intelDmg, join(macIntelReleaseDir, 'PDF Chapter Splitter (Intel).dmg'));
+    console.log('✓ Moved Intel DMG to release/mac');
   }
   if (existsSync(arm64Blockmap)) {
     try {
-      renameSync(arm64Blockmap, join(macInstallerDir, 'PDF Chapter Splitter (Apple Silicon).dmg.blockmap'));
+      renameSync(arm64Blockmap, join(macArm64ReleaseDir, 'PDF Chapter Splitter (Apple Silicon).dmg.blockmap'));
     } catch (e) {
       // File might already be moved
     }
   }
   if (existsSync(intelBlockmap)) {
     try {
-      renameSync(intelBlockmap, join(macInstallerDir, 'PDF Chapter Splitter (Intel).dmg.blockmap'));
+      renameSync(intelBlockmap, join(macIntelReleaseDir, 'PDF Chapter Splitter (Intel).dmg.blockmap'));
     } catch (e) {
       // File might already be moved
     }
@@ -56,12 +60,12 @@ if (platform === 'all' || platform === 'win') {
   const winBlockmap = join(releaseDir, 'PDF Chapter Splitter Setup 1.0.0.exe.blockmap');
 
   if (existsSync(winExe)) {
-    renameSync(winExe, join(winInstallerDir, 'PDF Chapter Splitter Setup.exe'));
-    console.log('✓ Moved Windows installer');
+    renameSync(winExe, join(winReleaseDir, 'PDF Chapter Splitter Setup.exe'));
+    console.log('✓ Moved Windows installer to release/win');
   }
   if (existsSync(winBlockmap)) {
     try {
-      renameSync(winBlockmap, join(winInstallerDir, 'PDF Chapter Splitter Setup.exe.blockmap'));
+      renameSync(winBlockmap, join(winReleaseDir, 'PDF Chapter Splitter Setup.exe.blockmap'));
     } catch (e) {
       // File might already be moved
     }
@@ -69,4 +73,3 @@ if (platform === 'all' || platform === 'win') {
 }
 
 console.log('✓ Installers organized successfully');
-
