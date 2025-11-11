@@ -20,6 +20,7 @@ build({
   format: 'esm',
   outfile: join(outDir, 'main.js'),
   external: ['electron'],
-  sourcemap: true,
+  sourcemap: false,
+  minify: true,
 }).catch(() => process.exit(1));
 

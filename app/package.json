@@ -12,33 +12,34 @@
     "electron:dev": "npm run build:electron && concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
     "electron:build": "npm run build && npm run build:electron && electron-builder && npm run move:installers",
     "electron:pack": "npm run build && npm run build:electron && electron-builder --dir",
-    "electron:pack:mac": "CSC_IDENTITY_AUTO_DISCOVERY=false npm run build && npm run build:electron && electron-builder --mac --config.mac.forceCodeSigning=false && npm run move:installers:mac",
+    "electron:pack:mac": "npm run build && npm run build:electron && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac && node ../scripts/clean-xattrs.js && node ../scripts/ad-hoc-sign.js && npm run move:installers:mac",
     "electron:pack:win": "npm run build && npm run build:electron && electron-builder --win && npm run move:installers:win",
     "move:installers": "node move-installers.js",
     "move:installers:mac": "node move-installers.js mac",
     "move:installers:win": "node move-installers.js win"
   },
   "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "pdfjs-dist": "^4.4.168",
+    "jszip": "^3.10.1",
     "pdf-lib": "^1.17.1",
-    "jszip": "^3.10.1"
+    "pdfjs-dist": "^4.4.168",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
+    "@electron/universal": "^2.0.1",
     "@types/jszip": "^3.4.1",
+    "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0",
+    "autoprefixer": "^10.4.22",
+    "concurrently": "^9.1.0",
     "electron": "^33.2.1",
     "electron-builder": "^25.1.8",
-    "concurrently": "^9.1.0",
-    "wait-on": "^8.0.1",
-    "tailwindcss": "^3.4.17",
-    "postcss": "^8.4.49",
-    "autoprefixer": "^10.4.20",
-    "esbuild": "^0.24.0"
+    "esbuild": "^0.24.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0",
+    "wait-on": "^8.0.1"
   },
   "build": {
     "appId": "com.pdfchaptersplitter.app",
@@ -46,6 +47,12 @@
     "directories": {
       "output": "../release"
     },
+    "compression": "maximum",
+    "asar": true,
+    "npmRebuild": false,
+    "npmArgs": [
+      "--no-optional"
+    ],
     "files": [
       "dist/**/*",
       "dist-electron/**/*"
@@ -61,16 +68,10 @@
             "arm64"
           ]
         }
-      ],
-      "identity": null,
-      "gatekeeperAssess": false,
-      "hardenedRuntime": false,
-      "timestamp": false,
-      "forceCodeSigning": false,
-      "extendInfo": {
-        "com.apple.security.cs.disable-library-validation": true,
-        "com.apple.security.cs.allow-jit": true
-      }
+      ]
+    },
+    "dmg": {
+      "artifactName": "PDF Chapter Splitter v${version}-${arch}.dmg"
     },
     "win": {
       "icon": "Icons/pdf_splitter_icon.ico",
@@ -78,8 +79,7 @@
         {
           "target": "nsis",
           "arch": [
-            "x64",
-            "ia32"
+            "x64"
           ]
         }
       ],
@@ -88,7 +88,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "PDF Chapter Splitter v${version}.exe"
     }
   }
 }

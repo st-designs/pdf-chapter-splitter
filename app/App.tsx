@@ -5,7 +5,6 @@ import { ResultsDisplay } from './components/ResultsDisplay';
 import { Spinner } from './components/Spinner';
 import { splitPdfByChapters } from './services/pdfSplitter';
 import type { SplitPdfFile } from './types';
-import * as pdfjsLib from 'pdfjs-dist';
 import { setupPdfWorker } from './utils/pdfWorker';
 
 const App: React.FC = () => {
@@ -16,17 +15,27 @@ const App: React.FC = () => {
     const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
     const [isGeneratingThumbnail, setIsGeneratingThumbnail] = useState<boolean>(false);
 
+    const [pdfjsLib, setPdfjsLib] = useState<any | null>(null);
+
     // Set up pdf.js worker on component mount
     React.useEffect(() => {
-        setupPdfWorker();
+        (async () => {
+            const pdfjs = await import('pdfjs-dist');
+            setupPdfWorker(pdfjs);
+            setPdfjsLib(pdfjs);
+        })();
     }, []);
 
     const generateThumbnail = async (file: File) => {
         setIsGeneratingThumbnail(true);
         try {
-            
+            if (!pdfjsLib) {
+                const pdfjs = await import('pdfjs-dist');
+                setupPdfWorker(pdfjs);
+                setPdfjsLib(pdfjs);
+            }
             const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+            const pdf = await (pdfjsLib || (await import('pdfjs-dist'))).getDocument(arrayBuffer).promise;
             const page = await pdf.getPage(1);
 
             const canvas = document.createElement('canvas');

@@ -4,13 +4,17 @@
   "version": "1.0.0",
   "description": "PDF Chapter Splitter - Root workspace",
   "scripts": {
-    "install": "cd Contents && npm install",
-    "dev": "cd Contents && npm run dev",
-    "build": "cd Contents && npm run build",
-    "electron:dev": "cd Contents && npm run electron:dev",
-    "electron:pack:mac": "cd Contents && npm run electron:pack:mac",
-    "electron:pack:win": "cd Contents && npm run electron:pack:win",
-    "electron:build": "cd Contents && npm run electron:build"
+    "install": "cd app && npm install",
+    "dev": "cd app && npm run dev",
+    "build": "cd app && npm run build",
+    "electron:dev": "cd app && npm run electron:dev",
+    "electron:pack:mac": "cd app && npm run electron:pack:mac",
+    "electron:pack:win": "cd app && npm run electron:pack:win",
+    "electron:build": "cd app && npm run electron:build"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.0",
+    "vite": "^7.2.2",
+    "@electron/universal": "^2.0.1"
   }
 }
-

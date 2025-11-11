@@ -18,10 +18,20 @@ yarn-error.log*
 # Build artifacts
 build/
 dist/
+dist-electron/
 release/
 
-# Installers
-# Installers are now located within Contents/release/
+# Installers (organized under release/<arch>/)
 *.dmg
 *.exe
 *.blockmap
+
+# Editors/IDE
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+
+# Logs
+*.log

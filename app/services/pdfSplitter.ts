@@ -1,6 +1,4 @@
 import type { ChapterInfo, SplitPdfFile } from '../types';
-import * as pdfjsLib from 'pdfjs-dist';
-import { PDFDocument } from 'pdf-lib';
 import { setupPdfWorker } from '../utils/pdfWorker';
 
 // Helper function to sanitize file names
@@ -33,8 +31,9 @@ const flattenOutline = async (outlineItems: any[], pdfDoc: any): Promise<{ title
 
 
 export const splitPdfByChapters = async (file: File): Promise<SplitPdfFile[]> => {
-    // Set up pdf.js worker
-    setupPdfWorker();
+    // Lazy-load heavy libraries
+    const pdfjsLib = await import('pdfjs-dist');
+    setupPdfWorker(pdfjsLib);
 
     const arrayBuffer = await file.arrayBuffer();
     // Create a copy of the buffer for pdf-lib, as pdf.js will transfer and "detach" the original buffer when using its worker.
@@ -68,6 +67,7 @@ export const splitPdfByChapters = async (file: File): Promise<SplitPdfFile[]> =>
     });
     
     // 2. Use pdf-lib to perform the splitting
+    const { PDFDocument } = await import('pdf-lib');
     const originalPdf = await PDFDocument.load(bufferForPdfLib);
     const splitFiles: SplitPdfFile[] = [];
 
