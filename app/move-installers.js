@@ -33,45 +33,35 @@ if (!existsSync(appleSiliconDir)) {
 
 // Move Mac installers (per-arch)
 if (platform === 'all' || platform === 'mac') {
-  // With dmg.artifactName = "PDF Chapter Splitter v${version}-${arch}.dmg"
-  // Source DMGs may already be in release/mac with friendly names from previous step
-  const intelDmgSrcs = [
-    join(releaseDir, 'PDF Chapter Splitter v1.0.0-x64.dmg'),
-    join(macReleaseDir, 'PDF Chapter Splitter v1.0.0 (Intel).dmg'),
-  ];
-  const arm64DmgSrcs = [
-    join(releaseDir, 'PDF Chapter Splitter v1.0.0-arm64.dmg'),
-    join(macReleaseDir, 'PDF Chapter Splitter v1.0.0 (Apple Silicon).dmg'),
-  ];
-  const intelBlockmapSrcs = [
-    join(releaseDir, 'PDF Chapter Splitter v1.0.0-x64.dmg.blockmap'),
-    join(macReleaseDir, 'PDF Chapter Splitter v1.0.0 (Intel).dmg.blockmap'),
-  ];
-  const arm64BlockmapSrcs = [
-    join(releaseDir, 'PDF Chapter Splitter v1.0.0-arm64.dmg.blockmap'),
-    join(macReleaseDir, 'PDF Chapter Splitter v1.0.0 (Apple Silicon).dmg.blockmap'),
-  ];
-
-  // Move Intel DMG + blockmap into Intel folder, renaming to common name
-  const intelDmgSrc = intelDmgSrcs.find(p => existsSync(p));
-  if (intelDmgSrc) {
-    renameSync(intelDmgSrc, join(intelDir, 'Intel (x86_64).dmg'));
-    console.log('✓ Placed Intel DMG in', intelDir);
-  }
-  const intelBlockmapSrc = intelBlockmapSrcs.find(p => existsSync(p));
-  if (intelBlockmapSrc) {
-    renameSync(intelBlockmapSrc, join(intelDir, 'Intel (x86_64).dmg.blockmap'));
+  // With artifactName = "PDF Chapter Splitter v${version}-${arch}.zip"
+  // Move Intel ZIP into Intel folder, renaming to folder name
+  const intelZip = join(releaseDir, 'PDF Chapter Splitter v1.0.0-x64.zip');
+  if (existsSync(intelZip)) {
+    renameSync(intelZip, join(intelDir, 'Intel (x86_64).zip'));
+    console.log('✓ Placed Intel ZIP in', intelDir);
   }
 
-  // Move Apple Silicon DMG + blockmap into Apple Silicon folder, renaming to common name
-  const arm64DmgSrc = arm64DmgSrcs.find(p => existsSync(p));
-  if (arm64DmgSrc) {
-    renameSync(arm64DmgSrc, join(appleSiliconDir, 'Apple Silicon (ARM64).dmg'));
-    console.log('✓ Placed Apple Silicon DMG in', appleSiliconDir);
+  // Move Apple Silicon ZIP into Apple Silicon folder, renaming to folder name
+  const arm64Zip = join(releaseDir, 'PDF Chapter Splitter v1.0.0-arm64.zip');
+  if (existsSync(arm64Zip)) {
+    renameSync(arm64Zip, join(appleSiliconDir, 'Apple Silicon (ARM64).zip'));
+    console.log('✓ Placed Apple Silicon ZIP in', appleSiliconDir);
   }
-  const arm64BlockmapSrc = arm64BlockmapSrcs.find(p => existsSync(p));
-  if (arm64BlockmapSrc) {
-    renameSync(arm64BlockmapSrc, join(appleSiliconDir, 'Apple Silicon (ARM64).dmg.blockmap'));
+
+  // Move ZIP blockmaps (if generated) into respective folders
+  const intelZipBlockmap = join(releaseDir, 'PDF Chapter Splitter v1.0.0-x64.zip.blockmap');
+  if (existsSync(intelZipBlockmap)) {
+    try {
+      renameSync(intelZipBlockmap, join(intelDir, 'Intel (x86_64).zip.blockmap'));
+      console.log('✓ Placed Intel ZIP blockmap in', intelDir);
+    } catch {}
+  }
+  const arm64ZipBlockmap = join(releaseDir, 'PDF Chapter Splitter v1.0.0-arm64.zip.blockmap');
+  if (existsSync(arm64ZipBlockmap)) {
+    try {
+      renameSync(arm64ZipBlockmap, join(appleSiliconDir, 'Apple Silicon (ARM64).zip.blockmap'));
+      console.log('✓ Placed Apple Silicon ZIP blockmap in', appleSiliconDir);
+    } catch {}
   }
 
   // Move .app bundles (built outputs) into respective folders
