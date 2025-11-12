@@ -28,6 +28,40 @@ A simple, standalone desktop application that automatically splits PDF files int
 - ✅ No internet connection required
 - ✅ No API keys or external services needed
 
----
+## How to Install
 
-*Built with ❤️ using React, Electron, and modern web technologies*
+If macOS says the app is "damaged" or "can’t be opened," follow these steps:
+
+1. Disable Gatekeeper (temporarily)
+
+- Open Terminal (Applications → Utilities)
+- Run this command (you will be asked for your password):
+
+```bash
+sudo spctl --master-disable
+```
+
+- Open System Settings → Privacy & Security
+- Scroll down and enable "Allow apps downloaded from: Anywhere."
+
+2. Remove Quarantine (important)
+
+If the app still doesn’t open, remove the quarantine flag:
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/PDF Chapter Splitter.app"
+```
+
+3. Open the App
+
+Now open it normally from your Applications folder.
+
+4. (Optional) Re-enable Gatekeeper
+
+Once the app runs successfully, you can turn Gatekeeper back on for safety:
+
+```bash
+sudo spctl --master-enable
+```
+
+---

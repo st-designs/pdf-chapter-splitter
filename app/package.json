@@ -47,7 +47,7 @@
     "directories": {
       "output": "../release"
     },
-    "artifactName": "PDF Chapter Splitter v${version}-${arch}.zip",
+    "artifactName": "${productName} v${version}-${arch}.${ext}",
     "compression": "maximum",
     "asar": true,
     "npmRebuild": false,
@@ -63,7 +63,7 @@
       "category": "public.app-category.utilities",
       "target": [
         {
-          "target": "zip",
+          "target": "dmg",
           "arch": [
             "x64",
             "arm64"
